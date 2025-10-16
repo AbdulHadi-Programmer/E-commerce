@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
 2. Object-level Validation
 For conditions that depends on multiple fields 
 Example: discount_price < price 
-```python
+```pythone
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
