@@ -8,6 +8,13 @@ from rest_framework import status
 from .models import * 
 from .serializers import * 
 from django.shortcuts import get_object_or_404
+# from django.contrib.auth.models import User 
+from rest_framework import generics, serializers, status 
+from rest_framework_simplejwt.tokens import RefreshToken 
+from rest_framework.permissions import IsAuthenticated 
+from rest_framework import generics, mixins 
+from django.contrib.auth import get_user_model 
+
 
 # ModelViewSet is the easiest way to write CRUD in 3 lines only 
 class ProductViewSet(ModelViewSet):
@@ -28,18 +35,21 @@ class ProductAPIView(APIView):
     GET -> List all products 
     POST -> Create a new product 
     """
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        print(">>> HIT ProductAPIView (LIST)")
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     
     def post(self, request):
-        serializers = ProductSerializer(data=request.data)
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CustomerAPIView(APIView):
     """
@@ -90,12 +100,13 @@ class ProductDetailAPIView(APIView):
     #         return None 
     
     def get(self, request, pk):
-        product = get_object_or_404(pk)
+        print(">>> HIT ProductDetailAPIView (DETAIL)")
+        product = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
     
     def put(self, request, pk):
-        product = get_object_or_404(pk)
+        product = get_object_or_404(Product, pk=pk)
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -103,7 +114,7 @@ class ProductDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request, pk):
-        product = get_object_or_404(pk)
+        product = get_object_or_404(Product, pk=pk)
         # Pass the existing product and the incoming data
         serializer = ProductSerializer(product, data=request.data, partial=True)
         if serializer.is_valid():
@@ -113,7 +124,7 @@ class ProductDetailAPIView(APIView):
     
 
     def delete(self, request, pk):
-        product = get_object_or_404(pk)
+        product = get_object_or_404(Product, pk=pk)
         product.delete()
         return Response({"message": "Product Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT)
     
@@ -126,14 +137,14 @@ class CustomerDetailAPIView(APIView):
     DELETE → Delete Customer
     """ 
     def get(self, request, pk):
-        customer = get_object_or_404(pk)
+        customer = get_object_or_404(Customer, pk=pk)
         if not customer:
             return Response({'error': "Customer Not Found"}, status=status.HTTP_404_NOT_FOUND)
         serializers = CustomerSerializer(customer)
         return Response(serializers.data)
 
     def put(self, request, pk):
-        customer = get_object_or_404(pk)
+        customer = get_object_or_404(Customer, pk=pk)
         serializer = CustomerSerializer(customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -142,7 +153,7 @@ class CustomerDetailAPIView(APIView):
 
 
     def patch(self, request, pk):
-        customer = get_object_or_404(pk)
+        customer = get_object_or_404(Customer, pk=pk)
         serializer = CustomerSerializer(customer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -150,7 +161,7 @@ class CustomerDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        customer = get_object_or_404(pk)
+        customer = get_object_or_404(Customer, pk=pk)
         customer.delete()
         return Response({"message": "Customer Deleted Successfully"}, status=status.HTTP_204_NO_CONTENT)
 
@@ -165,12 +176,12 @@ class CategoryDetailAPIView(APIView):
     """
 
     def get(self, request, pk):
-        category = get_object_or_404(pk)  # By using this we avoid writing same code again and again 
+        category = get_object_or_404(Category, pk=pk)  # By using this we avoid writing same code again and again 
         serializer = CategorySerializer(category)
         return Response(serializer.data)
 
     def put(self, request, pk):
-        category = get_object_or_404(pk)
+        category = get_object_or_404(Category, pk=pk)
         serializer = CategorySerializer(category, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -178,7 +189,7 @@ class CategoryDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk):
-        category = get_object_or_404(pk)
+        category = get_object_or_404(Category, pk=pk)
         serializer = CategorySerializer(category, data=request.data, partial=True)
         
         if serializer.is_valid():
@@ -187,7 +198,7 @@ class CategoryDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        category = get_object_or_404(pk)
+        category = get_object_or_404(Category, pk=pk)
         category.delete()
         return Response({"message": "Category deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
@@ -195,9 +206,6 @@ class CategoryDetailAPIView(APIView):
 # =====================================================================================================================
 #            GenericAPIView + Mixins :
 # =====================================================================================================================
-from rest_framework import generics, mixins 
-from .models import Product 
-from .serializers import ProductSerializer 
 
 # Product Mixins View:
 class ProductListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
@@ -218,8 +226,9 @@ class ProductListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, g
 
 # DetailAPIView class inherit the mixins:  Retrive + Update + Delete :
 class ProductDetailMixinView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
-    queryset = Product 
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer    
+    lookup_field = "pk"
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -238,7 +247,7 @@ class ProductDetailMixinView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
 class CategoryListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
+    
     # GET Method to get 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -251,6 +260,7 @@ class CategoryListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, 
 class CategoryDetailMixinView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Category 
     serializer_class = CategorySerializer    
+    lookup_field = "pk"
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -293,3 +303,57 @@ class CustomerDetailMixinView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin
     
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+############################################################################################################################################
+#     CONCRETE GENERIC API View  (Optional: Skipping for now)
+############################################################################################################################################
+from rest_framework.permissions import AllowAny
+
+## Authentication using JWT :
+class RegisterAPIView(generics.CreateAPIView):  # Import the create Api view from Generics
+    User = get_user_model()
+    queryset = User.objects.all()   
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Generate JWT tokens automatically after registration 
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            "user": serializer.data, 
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),  
+        }, status = status.HTTP_201_CREATED)
+    
+
+# Protecting the endpoints:
+
+class ProfileView(APIView):
+    # permission_classes= [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "username": user.username, 
+            "email": user.email 
+        })
+
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+
+class LogoutView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"message": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response({"error": "Invalid token or already blacklisted"}, status=status.HTTP_400_BAD_REQUEST)

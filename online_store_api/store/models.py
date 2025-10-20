@@ -1,4 +1,17 @@
 from django.db import models
+## Authentication : 
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    """
+    Custom User model that extends Django's built-in AbstractUser.
+    Useful for adding roles and future fields (like phone, address, etc.)
+    """
+    is_seller = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.username
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -19,8 +32,38 @@ class Product(models.Model):
 
 # Customer :
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer_profile")
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
     email = models.EmailField(unique=True)
     joined_date = models.DateField(auto_now_add=True)
 
+
+
+
+# class User(AbstractUser):
+#     email = models.EmailField(unique=True)
+
+#     USERNAME_FIELD = "email"
+#     REQUIRED_FIELDS = ["username"]
+
+#     def __str__(self):
+#         return self.email 
+    
+# class Customer(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer_profile")
+#     address = models.CharField(max_length=255, blank=True, null=True)
+#     phone = models.CharField(max_length=15, blank=True, null=True)
+
+#     def __str__(self):
+#         return self.user.email 
+
+
+
+# {
+#     "user": {
+#         "username": "ahmad"
+#     },
+#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTQwNDkwOCwiaWF0IjoxNzYwODAwMTA4LCJqdGkiOiI5MjA4MjliNmY5OGM0ZTlhYWQ0N2U0MzI3NDg0NDZmZCIsInVzZXJfaWQiOiIxIn0.UOolGexeztODdIFa61IFQk41WJnrv71bPy0WpXQ9m3Q",
+#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODAzNzA4LCJpYXQiOjE3NjA4MDAxMDgsImp0aSI6IjViMWYxYTlmYTBlYjQ5YzZhMGZjYWIzNGY1ZTY3YTE2IiwidXNlcl9pZCI6IjEifQ.ItQcJkduHLSNjsSvKTTbblhObqRRYBHovfvtMP_2L1w"
+# }

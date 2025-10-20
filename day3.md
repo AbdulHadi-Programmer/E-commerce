@@ -30,4 +30,21 @@ DRF Mixins provide reusable action logic:
 
 You can mix them into GenericAPIView to get only the functionality you need.
 
-## 
+# 17 Oct 2025 (Optional to learn)
+1. Now Learning Concrete Generic Views :
+- ListCreateAPIView
+- RetrieveUpdateDestroyAPIView
+
+2. **Learn Hook Methods:**
+* perform_create() 
+* perform_update() 
+* perform_destroy() 
+
+These are life-saving customizations.
+They let you control what happens before or after saving/deleted/updating an object.
+```python
+# Example:
+def perform_create(self, serializer):
+    serializer.save(created_by=self.request.user)
+```
+

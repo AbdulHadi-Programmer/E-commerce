@@ -1,37 +1,43 @@
-from rest_framework.routers import DefaultRouter
-from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView
+from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView, RegisterAPIView, ProfileView, LogoutView
 from django.urls import path, include 
+from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
 
-# ModelViewSet URL:
-router = DefaultRouter()
-router.register("products", ProductViewSet)
-router.register("categories", CategoryViewSet)
-router.register("customers", CustomerViewSet)
+# {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTM0MDkzOSwiaWF0IjoxNzYwNzM2MTM5LCJqdGkiOiI0MjNjMzI1ZTQ1YzQ0NTRlYThlMjNmMzJhYmQ5ZDA1MCIsInVzZXJfaWQiOiIyIn0.9-yyF-6GWnkNEuHK_ngrEmi7GbFqyXYy9b7m7QhWekk","access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNzM5NzM5LCJpYXQiOjE3NjA3MzYxMzksImp0aSI6ImM5YmExNjNhZmExMjQ1ZTY4NDc1ZTVkZTQ1MTlmNzExIiwidXNlcl9pZCI6IjIifQ.JzNrfFJo0DIa2SOh5_CLpI9iP24rLhGjC7pGq7pO0Jg"}
 
 urlpatterns = [
-    # path("api/", include(router.urls)),
     # Single API View for all the models 
 
-    # path("api/product_APIView/", ProductAPIView.as_view(), name="product-list"),
-    # path("api/customer_APIView/", CustomerAPIView.as_view(), name="customer-list"),
-    # path("api/category_APIView/", CategoryAPIView.as_view(), name="category-list"),
-
     # Detail View URLS:
-    # path("api/product_APIView/<int:pk>/", ProductDetailAPIView.as_view(), name="product-detail"),
-    # path("api/category_APIView/<int:pk>/", CategoryDetailAPIView.as_view(), name="category-detail"),
-    # path("api/customer_APIView/<int:pk>/", CustomerDetailAPIView.as_view(), name="customer-detail"),
+    path("product_APIView/", ProductAPIView.as_view(), name="product-list"),
+    path("product_APIView/<int:pk>/", ProductDetailAPIView.as_view(), name="product-detail"),
+    
+    path("customer_APIView/", CustomerAPIView.as_view(), name="customer-list"),
+    path("customer_APIView/<int:pk>/", CustomerDetailAPIView.as_view(), name="customer-detail"),
+    
+    path("category_APIView/", CategoryAPIView.as_view(), name="category-list"),
+    path("category_APIView/<int:pk>/", CategoryDetailAPIView.as_view(), name="category-detail"),
+
 
     # Generic APIView + Mixins Urls (All CRUD) :
     # List and Create Method url : 
-    path("product_mixins/", ProductListCreateAPIView.as_view(), name="all-product-mixin"),
-    path("category_mixins/", CategoryListCreateAPIView.as_view(), name="all-category-mixin"),
-    path("customer_mixins/", CustomerListCreateAPIView.as_view(), name="all-customer-mixin"),
+    # path("product_mixins/", ProductListCreateAPIView.as_view(), name="all-product-mixin"),
+    # path("category_mixins/", CategoryListCreateAPIView.as_view(), name="all-category-mixin"),
+    # path("customer_mixins/", CustomerListCreateAPIView.as_view(), name="all-customer-mixin"),
 
     # Detail Mixins URLs:
-    path("product_mixins/<int:pk>", ProductDetailMixinView.as_view(), name="all-product-mixin-detail"),
-    path("category_mixins/<int:pk>", CategoryDetailMixinView.as_view(), name="all-category-mixin-detail"),
-    path("customer_mixins/<int:pk>", CustomerDetailMixinView.as_view(), name="all-customer-mixin-detail"),
+    # path("product_mixins/<int:pk>", ProductDetailMixinView.as_view(), name="all-product-mixin-detail"),
+    # path("category_mixins/<int:pk>", CategoryDetailMixinView.as_view(), name="all-category-mixin-detail"),
+    # path("customer_mixins/<int:pk>", CustomerDetailMixinView.as_view(), name="all-customer-mixin-detail"),
     
-    
+    # JWT auth buildin urls:
+    #  Login (JWT)
+    path('register/', RegisterAPIView.as_view(), name="register"),
+    path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
+
+    # New profile authenticated view: 
+    path('profile/', ProfileView.as_view(), name='profile'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+
 ]
