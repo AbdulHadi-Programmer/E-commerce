@@ -1,4 +1,4 @@
-from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView, RegisterAPIView, ProfileView, LogoutView
+from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView, RegisterAPIView, ProfileView, LogoutView, ChangePasswordAPIView
 from django.urls import path, include 
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
@@ -39,5 +39,5 @@ urlpatterns = [
     # New profile authenticated view: 
     path('profile/', ProfileView.as_view(), name='profile'),
     path('logout/', LogoutView.as_view(), name='logout'),
-
+    path('change-password/', ChangePasswordAPIView.as_view(), name="change-password")
 ]

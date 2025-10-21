@@ -121,7 +121,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "password: 1234"
+									"text": "password: 123"
 								}
 							]
 						}
@@ -135,18 +135,16 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 1078.629458476366,
-			"y": -188.43796286380598,
-			"lastActivityTimestamp": 1760715896113,
+			"x": 825.1212454747663,
+			"y": -168.49951293636963,
+			"lastActivityTimestamp": 1761018074370,
 			"meta": {}
 		},
 		{
 			"followingUserId": null,
 			"opacityForNextShape": 1,
 			"stylesForNextShape": {
-				"tldraw:color": "light-blue",
-				"tldraw:fill": "solid",
-				"tldraw:dash": "solid"
+				"tldraw:geo": "rectangle"
 			},
 			"brush": null,
 			"scribbles": [],
@@ -161,7 +159,7 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 694.4000244140625,
+				"w": 525.6000366210938,
 				"h": 718.4000244140625
 			},
 			"insets": [
@@ -179,9 +177,9 @@
 			"isFocused": true,
 			"devicePixelRatio": 1.25,
 			"isCoarsePointer": false,
-			"isHoveringCanvas": false,
+			"isHoveringCanvas": true,
 			"openMenus": [],
-			"isChangingStyle": true,
+			"isChangingStyle": false,
 			"isReadonly": false,
 			"meta": {},
 			"duplicateProps": null,
@@ -190,12 +188,12 @@
 			"typeName": "instance"
 		},
 		{
-			"editingShapeId": null,
+			"editingShapeId": "shape:8UthXs8Gsx84YxrMzij8c",
 			"croppingShapeId": null,
 			"selectedShapeIds": [
-				"shape:3ZwDb9xFUfJp89W-YRNXf"
+				"shape:8UthXs8Gsx84YxrMzij8c"
 			],
-			"hoveredShapeId": null,
+			"hoveredShapeId": "shape:8UthXs8Gsx84YxrMzij8c",
 			"erasingShapeIds": [],
 			"hintingShapeIds": [],
 			"focusedGroupId": null,
@@ -205,12 +203,100 @@
 			"typeName": "instance_page_state"
 		},
 		{
-			"x": -333.3656727183949,
-			"y": 267.2452353074808,
-			"z": 0.8222591778959447,
+			"x": -398.3212271642194,
+			"y": 363.6995098846118,
+			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
+		},
+		{
+			"x": 620.7212363194928,
+			"y": -209.29950072933838,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:8UthXs8Gsx84YxrMzij8c",
+			"type": "geo",
+			"props": {
+				"w": 285.6000061035156,
+				"h": 187.9999847412109,
+				"geo": "rectangle",
+				"dash": "draw",
+				"growY": 0,
+				"url": "",
+				"scale": 1,
+				"color": "black",
+				"labelColor": "black",
+				"fill": "none",
+				"size": "m",
+				"font": "draw",
+				"align": "middle",
+				"verticalAlign": "middle",
+				"richText": {
+					"type": "doc",
+					"content": [
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "Accounts"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							}
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "Username:"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "admin"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "Password: admin"
+								}
+							]
+						}
+					]
+				}
+			},
+			"parentId": "page:page",
+			"index": "a2QG0TxV",
+			"typeName": "shape"
 		}
 	]
 }

@@ -12,8 +12,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, serializers, status 
 from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.permissions import IsAuthenticated 
-from rest_framework import generics, mixins 
+from rest_framework import mixins 
 from django.contrib.auth import get_user_model 
+
 
 
 # ModelViewSet is the easiest way to write CRUD in 3 lines only 
@@ -30,25 +31,24 @@ class CustomerViewSet(ModelViewSet):
     serializer_class = CustomerSerializer 
 
 ## API View  (for all 3 models):
-class ProductAPIView(APIView):
-    """
-    GET -> List all products 
-    POST -> Create a new product 
-    """
-    # permission_classes = [IsAuthenticated]
+# class ProductAPIView(APIView):  Normal API View
+#     """
+#     GET -> List all products 
+#     POST -> Create a new product 
+#     """
 
-    def get(self, request):
-        print(">>> HIT ProductAPIView (LIST)")
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+#     def get(self, request):
+#         print(">>> HIT ProductAPIView (LIST)")
+#         products = Product.objects.all()
+#         serializer = ProductSerializer(products, many=True)
+#         return Response(serializer.data)
     
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = ProductSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomerAPIView(APIView):
@@ -304,56 +304,41 @@ class CustomerDetailMixinView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import Product
+from .serializers import ProductSerializer
+from .permissions import IsSeller, IsCustomer
+
+class ProductAPIView(APIView):
+    """
+    GET -> Customers & Sellers can view
+    POST -> Only Sellers can add products
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        if not request.user.is_seller:
+            return Response({"error": "Only sellers can add products."}, status=status.HTTP_403_FORBIDDEN)
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 ############################################################################################################################################
 #     CONCRETE GENERIC API View  (Optional: Skipping for now)
 ############################################################################################################################################
-from rest_framework.permissions import AllowAny
 
-## Authentication using JWT :
-class RegisterAPIView(generics.CreateAPIView):  # Import the create Api view from Generics
-    User = get_user_model()
-    queryset = User.objects.all()   
-    serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
 
-        # Generate JWT tokens automatically after registration 
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            "user": serializer.data, 
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),  
-        }, status = status.HTTP_201_CREATED)
-    
 
-# Protecting the endpoints:
-
-class ProfileView(APIView):
-    # permission_classes= [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        return Response({
-            "username": user.username, 
-            "email": user.email 
-        })
-
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status
-
-class LogoutView(APIView):
-    # permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        try:
-            refresh_token = request.data["refresh"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response({"message": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            return Response({"error": "Invalid token or already blacklisted"}, status=status.HTTP_400_BAD_REQUEST)
