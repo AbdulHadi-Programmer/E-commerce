@@ -14,7 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework import mixins 
 from django.contrib.auth import get_user_model 
-
+from accounts.models import User 
+from store.serializers import CustomerSerializer 
 
 
 # ModelViewSet is the easiest way to write CRUD in 3 lines only 
@@ -87,6 +88,8 @@ class CategoryAPIView(APIView):
 
 # ======================================================================================================================================================
 ## Detail View (Get, Update, Delete)
+from accounts.permissions import IsOwnerOrReadOnly
+
 class ProductDetailAPIView(APIView):
     """
     GET → get a single product
@@ -98,6 +101,7 @@ class ProductDetailAPIView(APIView):
     #         return Product.objects.get(pk=pk)
     #     except Product.DoesNotExist:
     #         return None 
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     
     def get(self, request, pk):
         print(">>> HIT ProductDetailAPIView (DETAIL)")
@@ -310,7 +314,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Product
 from .serializers import ProductSerializer
-from .permissions import IsSeller, IsCustomer
+
 
 class ProductAPIView(APIView):
     """

@@ -13,7 +13,7 @@ from datetime import timedelta
 from pathlib import Path
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1440),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7)
 }
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'store',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +101,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = "store.User"  # app_name.model_name
+AUTH_USER_MODEL = "accounts.User"  # app_name.model_name
 
 
 # Password validation

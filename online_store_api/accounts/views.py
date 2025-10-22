@@ -8,6 +8,9 @@ from rest_framework import mixins
 from django.contrib.auth import get_user_model 
 from rest_framework.response import Response 
 from rest_framework.views import APIView  
+from .permissions import IsSeller, IsCustomer 
+from accounts.models import User
+from store.serializers import CustomerSerializer 
 
 # Create your views here.
 ## Authentication using JWT :
@@ -59,6 +62,7 @@ class LogoutView(APIView):
             return Response({"error": "Invalid token or already blacklisted"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class ChangePasswordAPIView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -74,3 +78,4 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
         user.save()
         return Response({"message": "Password updated successfully!"}, status=status.HTTP_200_OK)
 
+# GPT what can i do i have more luxury premium dream in my mind like this above workshop session in school idea, freelancing idea, job idea in big company idea, doing a physical or online business idea what can i do 

@@ -1,4 +1,4 @@
-from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView, RegisterAPIView, ProfileView, LogoutView, ChangePasswordAPIView
+from .views import ProductViewSet, CategoryViewSet, CustomerViewSet , ProductAPIView, CustomerAPIView, CategoryAPIView, ProductDetailAPIView, CategoryDetailAPIView, CustomerDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CustomerListCreateAPIView, ProductDetailMixinView, CategoryDetailMixinView, CustomerDetailMixinView
 from django.urls import path, include 
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
@@ -30,14 +30,14 @@ urlpatterns = [
     # path("category_mixins/<int:pk>", CategoryDetailMixinView.as_view(), name="all-category-mixin-detail"),
     # path("customer_mixins/<int:pk>", CustomerDetailMixinView.as_view(), name="all-customer-mixin-detail"),
     
-    # JWT auth buildin urls:
+    # JWT auth buildin urls:  (URLs in accounts)
     #  Login (JWT)
-    path('register/', RegisterAPIView.as_view(), name="register"),
-    path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path("token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
+    # path('register/', RegisterAPIView.as_view(), name="register"),
+    # path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path("token/refresh/", TokenRefreshView.as_view(), name='token_refresh'),
 
-    # New profile authenticated view: 
-    path('profile/', ProfileView.as_view(), name='profile'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('change-password/', ChangePasswordAPIView.as_view(), name="change-password")
+    # # New profile authenticated view: 
+    # path('profile/', ProfileView.as_view(), name='profile'),
+    # path('logout/', LogoutView.as_view(), name='logout'),
+    # path('change-password/', ChangePasswordAPIView.as_view(), name="change-password")
 ]
