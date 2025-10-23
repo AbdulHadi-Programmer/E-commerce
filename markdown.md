@@ -57,3 +57,6 @@ class ProductSerializer(serializers.ModelSerializer):
 | **Performance**              | `select_related`, caching, async, Redis, rate limits                   | Lets you handle high traffic without breaking.            |
 | **Deployment & Maintenance** | Nginx, Gunicorn, Docker, .env configs                                  | Moves you from “developer” → “engineer”.                  |
 | **API Design & Docs**        | REST design, Swagger, versioning                                       | Makes your APIs usable, maintainable, and future-proof.   |
+
+
+Gpt as you know that my 60 days to become python backend developer challenge is continue today is day 8 and i want you to create a html that because show my roadmap with days duration and tech stack as well as i can tell you in framework currently learned drf basic moving forward to intermediate and then it should be complete in some days from day 8 and then we can learn postrgesql and then fast api and then celery redis and docker etc as i thing you have to keep in mind that is after 2 weeks mean from today my mid term will start and continue till 1.5 week of time and at time we will add things like docker or redis celery because we have to keep all thing light weight and first discuss with me how and what you can add data so i can check and give you correction then go create it .

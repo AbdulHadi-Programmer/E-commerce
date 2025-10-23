@@ -16,7 +16,7 @@ from rest_framework import mixins
 from django.contrib.auth import get_user_model 
 from accounts.models import User 
 from store.serializers import CustomerSerializer 
-
+from accounts.permissions import * 
 
 # ModelViewSet is the easiest way to write CRUD in 3 lines only 
 class ProductViewSet(ModelViewSet):
@@ -343,6 +343,35 @@ class ProductAPIView(APIView):
 #     CONCRETE GENERIC API View  (Optional: Skipping for now)
 ############################################################################################################################################
 
+## 22 October 2025
+### Permission Added New View : 
+# Sellers can add or update products 
+class SellerProductView(APIView):
+    permission_classes = [IsAuthenticated, IsSeller]
 
+    def post(self, request): 
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(seller = request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        if product.seller != request.user:
+            return Response({"error": "You can only edit your own products"}, status=status.HTTP_403_FORBIDDEN)
+        serializer = ProductSerializer(product, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # 
+# Customers can view only Products
+class CustomerProductListView(APIView):
+    permission_classes = [IsAuthenticated, IsCustomer]
 
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
 

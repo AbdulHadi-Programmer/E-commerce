@@ -14,6 +14,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discounted_price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="seller_products")
 
     def __str__(self):
         return self.name

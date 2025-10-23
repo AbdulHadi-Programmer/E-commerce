@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from store.serializers import RegisterSerializer
+from .serializers import RegisterSerializer
 from rest_framework import generics, serializers, status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken 

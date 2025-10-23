@@ -31,19 +31,25 @@ class IsAdminOrReadOnly(BasePermission):
     Allow admins = full access 
     GET request = Normal users
     """
-    def has_object_permission(self, request, view, obj):
+    def has_permission(self, request, view, obj):
+        # Allow any GET , HEAD, or OPTIONS request. 
         if request.method in SAFE_METHODS:
             return True 
+        
         return obj.user == request.user.is_superuser
-    
+
+class IsSeller(BasePermission):
+    """Allow access only to sellers"""
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticaed and request.user.is_seller) 
+
+
 """
 🔍 Step 5: Practice Tasks
 
 🧩 Task 1:
 Create a custom permission IsAdminOrReadOnly that:
-
 Allows admins full access.
-
 Allows normal users only GET methods.
 
 🧩 Task 2:

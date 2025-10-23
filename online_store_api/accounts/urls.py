@@ -2,7 +2,7 @@ from django.urls import path
 from .views import RegisterAPIView, ProfileView, LogoutView, ChangePasswordAPIView
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
-urlpattern = [
+urlpatterns = [
     # JWT auth buildin urls:
     #  Login (JWT)
     path('register/', RegisterAPIView.as_view(), name="register"),
