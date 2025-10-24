@@ -39,15 +39,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ["name", "products"]
 
-# --- CUSTOMER SERIALIZER ---
+# -------------- Customer Serializer ---------------
 class CustomerSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username", read_only=True)
+    email = serializers.EmailField(source="user.email", read_only=True)
+
     class Meta:
         model = Customer
-        fields = "__all__"
-
-    def create(self, validated_data):
-        validated_data["name"] = validated_data["name"].title()
-        return super().create(validated_data)
+        fields = ["id", "username", "email", "age", "joined_date"]
 
     def validate_age(self, value):
         if value < 18:

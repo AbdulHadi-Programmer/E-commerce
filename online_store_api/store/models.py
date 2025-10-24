@@ -22,10 +22,12 @@ class Product(models.Model):
 # Customer :
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer_profile")
-    name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
-    email = models.EmailField(unique=True)
     joined_date = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.user.username 
+    
 
 
 

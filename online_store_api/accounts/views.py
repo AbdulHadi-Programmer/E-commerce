@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .serializers import RegisterSerializer
+from django.shortcuts import render, get_object_or_404
+from .serializers import RegisterSerializer , ProfileSerializer
 from rest_framework import generics, serializers, status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken 
@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView  
 from .permissions import IsSeller, IsCustomer 
 from accounts.models import User
-from store.serializers import CustomerSerializer 
+from store.serializers import CustomerSerializer
 
 # Create your views here.
 ## Authentication using JWT :
@@ -46,6 +46,22 @@ class ProfileView(APIView):
             'is_seller': user.is_seller,
             "is_customer": user.is_customer
         })
+    def put(self, request):
+        user =  request.user 
+        serializer = ProfileSerializer(user, data=request.data)
+        if serializer.is_valid(): 
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request):
+        user = request.user
+        serializer = ProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status

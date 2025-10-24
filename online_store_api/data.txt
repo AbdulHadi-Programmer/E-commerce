@@ -1,0 +1,91 @@
+# User Data:
+1. username: abdul_hadi
+   email: hadi@gmail.com
+   password: hadi1234
+   is_seller: False
+   is_customer: True
+
+2. username: fatima_k
+   email: fatima.khan@gmail.com
+   password: fatima123
+   is_seller: False
+   is_customer: True
+
+3. username: ali_rehman
+   email: ali.rehman@gmail.com
+   password: ali2025
+   is_seller: True
+   is_customer: False
+
+4. username: zoya_ahmad
+   email: zoya.ahmad@gmail.com
+   password: zoya123
+   is_seller: False
+   is_customer: True
+
+5. username: saif_dev
+   email: saif.dev@gmail.com
+   password: saifdev
+   is_seller: True
+   is_customer: False
+
+6. username: sara_waheed
+   email: sara.waheed@gmail.com
+   password: sara123
+   is_seller: False
+   is_customer: True
+
+7. username: hamza_tech
+   email: hamza.tech@gmail.com
+   password: hamza2025
+   is_seller: True
+   is_customer: False
+
+8. username: iman_rashid
+   email: iman.rashid@gmail.com
+   password: iman123
+   is_seller: False
+   is_customer: True
+
+9. username: danish_malik
+   email: danish.malik@gmail.com
+   password: danishm
+   is_seller: True
+   is_customer: False
+
+10. username: minal_shah
+    email: minal.shah@gmail.com
+    password: minal123
+    is_seller: False
+    is_customer: True
+
+
+# Customer Data: 
+# --------------------
+1. user: abdul_hadi
+   age: 22
+   joined_date: 2025-09-15
+
+2. user: fatima_k
+   age: 24
+   joined_date: 2025-09-17
+
+3. user: zoya_ahmad
+   age: 27
+   joined_date: 2025-09-19
+
+4. user: sara_waheed
+   age: 29
+   joined_date: 2025-09-21
+
+5. user: iman_rashid
+   age: 25
+   joined_date: 2025-09-23
+
+6. user: minal_shah
+   age: 26
+   joined_date: 2025-09-25
+
+
+
+

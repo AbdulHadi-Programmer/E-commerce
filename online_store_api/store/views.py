@@ -351,21 +351,24 @@ class SellerProductView(APIView):
 
     def post(self, request): 
         serializer = ProductSerializer(data=request.data)
+
         if serializer.is_valid():
             serializer.save(seller = request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
-        product = Product.objects.get(pk=pk)
-        if product.seller != request.user:
-            return Response({"error": "You can only edit your own products"}, status=status.HTTP_403_FORBIDDEN)
+        product = Product.objects.get_object_or_404(pk=pk)
+
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # 
+
+
 # Customers can view only Products
 class CustomerProductListView(APIView):
     permission_classes = [IsAuthenticated, IsCustomer]

@@ -11,6 +11,8 @@ urlpatterns = [
 
     # New profile authenticated view: 
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile/put/', ProfileView.as_view(), name='profile-complete-update'),
+    path('profile/patch/', ProfileView.as_view(), name='profile-single-update'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('change-password/', ChangePasswordAPIView.as_view(), name="change-password")
 ]
