@@ -40,7 +40,8 @@ urlpatterns = [
     # path('profile/', ProfileView.as_view(), name='profile'),
     # path('logout/', LogoutView.as_view(), name='logout'),
     # path('change-password/', ChangePasswordAPIView.as_view(), name="change-password")
-    path('seller/', SellerProductView.as_view()),
+    path('seller/products/', SellerProductView.as_view()),
+    path('seller/products/<int:pk>/', SellerProductView.as_view()),
     path('customer_products/', CustomerProductListView.as_view()), 
 
 ]

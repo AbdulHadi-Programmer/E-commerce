@@ -359,15 +359,21 @@ class SellerProductView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
-        product = Product.objects.get_object_or_404(pk=pk)
+        product = get_object_or_404(Product, pk=pk)
 
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(seller = request.user)
             return Response(serializer.data)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+"""  Post method data : 
+{  
+    "name": "Waching Machine",
+    "price": "481.99", 
+    "discounted_price": "450.99",
+    "category_id": 1
+}"""
 
 # Customers can view only Products
 class CustomerProductListView(APIView):
