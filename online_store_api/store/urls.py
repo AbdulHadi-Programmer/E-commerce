@@ -3,7 +3,6 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView)
 
 
-# {"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTM0MDkzOSwiaWF0IjoxNzYwNzM2MTM5LCJqdGkiOiI0MjNjMzI1ZTQ1YzQ0NTRlYThlMjNmMzJhYmQ5ZDA1MCIsInVzZXJfaWQiOiIyIn0.9-yyF-6GWnkNEuHK_ngrEmi7GbFqyXYy9b7m7QhWekk","access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwNzM5NzM5LCJpYXQiOjE3NjA3MzYxMzksImp0aSI6ImM5YmExNjNhZmExMjQ1ZTY4NDc1ZTVkZTQ1MTlmNzExIiwidXNlcl9pZCI6IjIifQ.JzNrfFJo0DIa2SOh5_CLpI9iP24rLhGjC7pGq7pO0Jg"}
 
 urlpatterns = [
     # Single API View for all the models 

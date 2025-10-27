@@ -36,9 +36,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 499.00142416762867,
-			"y": 443.7834432388605,
-			"lastActivityTimestamp": 1761404019451,
+			"x": 530.1037712270465,
+			"y": 450.64113275929276,
+			"lastActivityTimestamp": 1761491914818,
 			"meta": {}
 		},
 		{
@@ -127,9 +127,9 @@
 			"typeName": "shape"
 		},
 		{
-			"x": -121.26702322910982,
-			"y": 288.8225325058685,
-			"z": 0.8047982901337067,
+			"x": -288.5037651235309,
+			"y": 90.15885503367599,
+			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
@@ -181,7 +181,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTkyNTMyMCwiaWF0IjoxNzYxMzIwNTIwLCJqdGkiOiI4ZjdlODJkOGI2ZDQ0YmFjOTMxNTAwNWUzNzM0ZWQ2ZSIsInVzZXJfaWQiOiIxIn0.D-rOWyiQsJ4nVV9Mwe6VdxXbIt4e0JgRokTDdj9-ArQ\","
+									"text": "\"refresh\":"
 								}
 							]
 						},
@@ -189,12 +189,7 @@
 							"type": "paragraph",
 							"attrs": {
 								"dir": "auto"
-							},
-							"content": [
-								{
-									"type": "hardBreak"
-								}
-							]
+							}
 						},
 						{
 							"type": "paragraph",
@@ -204,7 +199,25 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "\"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNDkwMzk1LCJpYXQiOjE3NjE0MDM5OTUsImp0aSI6IjI4Njg4YTk4ZTU4YTQ0MTBhYzFiMjk4MWE5ZTYxZjdlIiwidXNlcl9pZCI6IjEifQ.G7adMLYonTcczw2st6WhGlwfD39dVDcnQRePiXJE3rI\""
+									"text": "\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MjA5NjY0NiwiaWF0IjoxNzYxNDkxODQ2LCJqdGkiOiI0MGUzZmM2MWU2NzA0NTY1OTQ2MjBlMTFlNzA5OGU4YyIsInVzZXJfaWQiOiIxIn0.ILMi5EqjajoUDIZNaa0ZJ9nRvzrlsMZTL_mO0kDFWgc\","
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							}
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "\"access\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNTc4MjQ2LCJpYXQiOjE3NjE0OTE4NDYsImp0aSI6IjkxNjg5MWMyOTE1MzQ5OTBiZTI3MTA0MzAxYjM3YzVjIiwidXNlcl9pZCI6IjEifQ.Ecjd4P4hZ9jXLUuMXm2umtGx6AS52vLHysXn7xRhZdk\""
 								}
 							]
 						},
@@ -437,7 +450,7 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 1048,
+				"w": 695.2000122070312,
 				"h": 718.4000244140625
 			},
 			"insets": [

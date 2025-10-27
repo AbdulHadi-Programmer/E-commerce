@@ -217,7 +217,8 @@ class ProductListCreateAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, g
     generics.GenericAPIView = queryset, serializer, get_serializer()
     """
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer 
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
     # HTTP GET → list()
     def get(self, request, *args, **kwargs):
@@ -358,6 +359,7 @@ class SellerProductView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    # Complete Data Update
     def put(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
 
@@ -367,6 +369,18 @@ class SellerProductView(APIView):
             return Response(serializer.data)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Single Attribute Update    
+    def patch(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+
+        serializer = ProductSerializer(product, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(seller = request.user)
+            return Response(serializer.data)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 """  Post method data : 
 {  
     "name": "Waching Machine",

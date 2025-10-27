@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from .models import Product, Category, Customer
-# from . import ProductSerializer
-
 
 
 # --- PRODUCT SERIALIZER ---
