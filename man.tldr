@@ -36,9 +36,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 530.1037712270465,
-			"y": 450.64113275929276,
-			"lastActivityTimestamp": 1761491914818,
+			"x": 516.9037590200153,
+			"y": 440.44115106983963,
+			"lastActivityTimestamp": 1761565424663,
 			"meta": {}
 		},
 		{
@@ -127,8 +127,8 @@
 			"typeName": "shape"
 		},
 		{
-			"x": -288.5037651235309,
-			"y": 90.15885503367599,
+			"x": -158.5037651235309,
+			"y": 65.15885503367599,
 			"z": 1,
 			"meta": {},
 			"id": "camera:page:page",
@@ -217,7 +217,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "\"access\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNTc4MjQ2LCJpYXQiOjE3NjE0OTE4NDYsImp0aSI6IjkxNjg5MWMyOTE1MzQ5OTBiZTI3MTA0MzAxYjM3YzVjIiwidXNlcl9pZCI6IjEifQ.Ecjd4P4hZ9jXLUuMXm2umtGx6AS52vLHysXn7xRhZdk\""
+									"text": "\"access\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxNjUxNzczLCJpYXQiOjE3NjE1NjUzNzMsImp0aSI6IjlmNWFlYmNjYzYxNjRkZjk5YTcyYjFhNGZlOGI1OGE2IiwidXNlcl9pZCI6IjEifQ.3ODNqAF7oDQ8SRrOMkmEvUBoXOt9lTKss4GGoauW9kk\""
 								}
 							]
 						},

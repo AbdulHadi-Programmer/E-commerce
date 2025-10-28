@@ -8,8 +8,8 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookSerializer(serializers.ModelSerializer):
-    author_name = serializers.CharField(source='author_name', read_only=True)
+    author_name = serializers.CharField(source='author.name', read_only=True)
     class Meta:
         model = Book 
-        fields = '__all__'
+        fields = ['title', 'description' ,'price' ,'author', 'author_name', 'published']
 

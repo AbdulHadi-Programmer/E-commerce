@@ -30,4 +30,5 @@ urlpatterns = [
     path("api/", include('store.urls')),
     path('api/', include(router.urls)),
     path('accounts/', include('accounts.urls')),
+    path('lab/', include('lab.urls'))
 ]

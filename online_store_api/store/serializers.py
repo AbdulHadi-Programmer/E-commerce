@@ -6,7 +6,7 @@ from .models import Product, Category, Customer
 class ProductSerializer(serializers.ModelSerializer):
     # Show category name instead of category ID
     category_name = serializers.CharField(source="category.name", read_only=True)
-
+    
     category_id = serializers.PrimaryKeyRelatedField(source="category", queryset=Category.objects.all(), write_only=True)
 
     class Meta:

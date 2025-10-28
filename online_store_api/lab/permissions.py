@@ -34,33 +34,32 @@ class IsAdminOrReadOnly(BasePermission):
 
 # Write your own version of CanPublishArticle (don't just copy mine)
 
+# permissions.py
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-
-# It restrict the user to not to publish the Article mean the book model one attribute 
 
 class CanPublishBook(BasePermission):
     """
-    Only staff/admin users can mark an article as published. (Article mean Book)
-    Normal users can edit everything else but cannot set is_published=True.
+    Only admins can set a book as published.
+    Normal authors can edit everything else.
     """
 
     def has_permission(self, request, view):
-        # Require authentication for any modifying action
+        # Everyone must be authenticated to modify anything
         if request.method in SAFE_METHODS:
             return True
         return bool(request.user and request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        # Allow safe methods always
+        # Allow read-only requests
         if request.method in SAFE_METHODS:
             return True
 
-        # Check if user is trying to publish (setting True)
+        # Get what the user is trying to update
         is_trying_to_publish = str(request.data.get("is_published")).lower() in ["true", "1"]
 
-        # Block if not staff and trying to publish
+        # If trying to publish but not admin → deny
         if is_trying_to_publish and not request.user.is_staff:
             return False
 
-        # Otherwise, normal update allowed
+        # Otherwise allow normal edits (title, description)
         return True
