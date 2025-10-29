@@ -61,3 +61,15 @@ class BookListView(APIView):
         # Return a paginated response
         return paginator.get_paginated_response(serializer.data)
 ```
+
+
+How to Use it in the Browser 
+Examples:
+1. GET /lab/book/                    <!-- return first 5 books -->
+2. GET /lab/book/?page=2             <!-- return next 5 books -->
+3. GET /lab/book/?size=10            <!-- return 10 per page -->
+4. GET /lab/book/?page=3&size=10     <!-- return page 3, 10 per page -->
+
+### If you want simpler pagination for the other API's
+Instead of writing all this in every view, you can: 
+1. Create a global setting in settings.py: 
