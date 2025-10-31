@@ -1,6 +1,5 @@
-from django.shortcuts import render
-from .models import Book, Author
-from .serializers import BookSerializer, AuthorSerializer
+from .models import Book, Author, Movie, Course, Profile, Album, Photo 
+from .serializers import BookSerializer, AuthorSerializer, MovieSerializer, CourseSerializer, ProfileSerializer, AlbumSerializer, PhotoSerializer
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response 
@@ -25,6 +24,7 @@ class BookAPIView(APIView):
 
     def get(self, request):
         books = Book.objects.all().order_by('-created_at')
+        # author = Author.objects.all()
 
         # --- Search ---
         search_query = request.GET.get('search')
@@ -32,13 +32,25 @@ class BookAPIView(APIView):
             books = books.filter(
                 Q(title__icontains=search_query) |
                 Q(description__icontains=search_query) |
-                Q(author__name__icontains=search_query)
+                Q(author__name__icontains=search_query) |
+                Q(author__bio__icontains=search_query )
             )
 
         # --- Genre filter ---
-        genre = request.GET.get('genre')
-        if genre:
-            books = books.filter(genre__iexact=genre)
+        # genre = request.GET.get('genre') # single data
+        genres = request.GET.getlist('genre')
+        if genres:
+            books = books.filter(genre__in=genres)
+            # books = books.filter(genre__iexact=genre) # Search single genre
+
+        # -- Task 3 -Price Range Filtering
+        min_price = request.GET.get('min_price')
+        max_price = request.GET.get('max_price')
+        if min_price and max_price: 
+            books = books.filter(
+                Q (price__gte=min_price) | 
+                Q (price__lte=max_price)
+            )
 
         # --- Year filter ---
         year = request.GET.get('year')
@@ -181,3 +193,80 @@ class AuthorDetailAPIView(APIView):
 
         # Return a success response
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+## Movie and Course APIView : 
+class MovieAPIView(APIView): 
+    def get(self, request):
+        movies = Movie.objects.all()
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+        
+    def post(self, request):
+        serializer = MovieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class CourseAPIView(APIView):
+    def get(self, request):
+        course = Course.objects.all()
+        serializer = CourseSerializer(course, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = CourseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+## Profile APIView 
+class ProfileUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user= request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        profile = Profile.objects.filter(user=request.user).first()
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+    
+# Album PhotoUploadView
+class AlbumAPIView(APIView):
+    def get(self, request):
+        album = Album.objects.all()
+        serializer = AlbumSerializer(album, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        serializer = AlbumSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AlbumPhotoUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, album_id):
+        album = get_object_or_404(Album, id=album_id, created_by=request.user)
+        files = request.FILES.getlist('images')
+
+        if not files:
+            return Response({'error': "No files provided"}, status=400)
+        
+        uploaded = []
+        for f in files:
+            photo= Photo.objects.create(album=album, image=f)
+            uploaded.append(photo)
+
+        serializer = PhotoSerializer(uploaded, many=True)
+        return Response(serializer.data, status=201)
+    

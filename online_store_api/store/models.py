@@ -50,11 +50,3 @@ class Customer(models.Model):
 #         return self.user.email 
 
 
-
-# {
-#     "user": {
-#         "username": "ahmad"
-#     },
-#     "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTQwNDkwOCwiaWF0IjoxNzYwODAwMTA4LCJqdGkiOiI5MjA4MjliNmY5OGM0ZTlhYWQ0N2U0MzI3NDg0NDZmZCIsInVzZXJfaWQiOiIxIn0.UOolGexeztODdIFa61IFQk41WJnrv71bPy0WpXQ9m3Q",
-#     "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODAzNzA4LCJpYXQiOjE3NjA4MDAxMDgsImp0aSI6IjViMWYxYTlmYTBlYjQ5YzZhMGZjYWIzNGY1ZTY3YTE2IiwidXNlcl9pZCI6IjEifQ.ItQcJkduHLSNjsSvKTTbblhObqRRYBHovfvtMP_2L1w"
-# }
