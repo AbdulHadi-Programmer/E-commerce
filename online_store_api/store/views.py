@@ -315,6 +315,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Product
 from .serializers import ProductSerializer
+from django.db.models import Q 
 
 
 class ProductAPIView(APIView):
@@ -326,6 +327,17 @@ class ProductAPIView(APIView):
 
     def get(self, request):
         products = Product.objects.all()
+        search_query = request.GET.get('search')
+        if search_query:
+            products = products.filter(
+                Q( name__icontains = search_query) |
+                Q( price__icontains = search_query) |
+                Q( discounted_price__icontains = search_query) |
+                Q( category__icontains = search_query) |
+                Q( seller__icontains = search_query) |
+                Q( stock__icontains = search_query) 
+            )
+        
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 

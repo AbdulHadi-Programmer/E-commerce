@@ -29,6 +29,7 @@ User = get_user_model()
 #             password = validated_data["password"]
 #         )
 #         return user
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, min_length=4)
     is_customer = serializers.BooleanField(default=True)

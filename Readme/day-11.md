@@ -156,4 +156,130 @@ class Photo(models.Model):
 ```
 ## Level 2 — Multiple File Uploads (APIView Only)
 🔸 Serializer
+```py
+# lab/serializers.py
+from rest_framework import serializers
+from .models import Album, Photo
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ['id', 'image', 'uploaded_at']
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    photos = PhotoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Album
+        fields = ['id', 'name', 'description', 'created_by', 'created_at', 'photos']
+        read_only_fields = ['created_by']
+```
+🔸 APIView
+```py
+# media_lab/views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from .models import Album, Photo
+from .serializers import AlbumSerializer, PhotoSerializer
+
+
+class AlbumPhotoUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        album_id = request.data.get('album_id')
+        if not album_id:
+            return Response({'error': 'album_id is required'}, status=400)
+
+        album = get_object_or_404(Album, id=album_id, created_by=request.user)
+        files = request.FILES.getlist('images')
+
+        if not files:
+            return Response({'error': "No files provided"}, status=400)
+
+        uploaded = []
+        for f in files:
+            photo = Photo.objects.create(album=album, image=f)
+            uploaded.append(photo)
+
+        serializer = PhotoSerializer(uploaded, many=True)
+        return Response(serializer.data, status=201)
+```
+✅ Upload many photos to one album:
+- POST /albums/<album_id>/upload/
+- form-data → key: images, multiple files
+
+
+# Level 3 — Validation, Security & Best Practices
+Let’s now add type, size, and ownership validation + file renaming.
+
+🔸 Serializer with Validations 
+```py
+# lab/serializers.py
+import os
+
+class ValidatedPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ['id', 'image', 'uploaded_at']
+
+    def validate_image(self, value):
+        valid_extensions = ['.jpg', '.jpeg', '.png']
+        ext = os.path.splitext(value.name)[1].lower()
+        if ext not in valid_extensions:
+            raise serializers.ValidationError("Only JPG, JPEG, or PNG files are allowed.")
+        if value.size > 2 * 1024 * 1024:  # 2MB limit
+            raise serializers.ValidationError("Image size must be under 2MB.")
+        return value
+```
+🔸 Updated APIView with Ownership & Validation
+```py
+class SafeAlbumPhotoUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, album_id):
+        album = get_object_or_404(Album, id=album_id, created_by=request.user)
+        files = request.FILES.getlist('images')
+
+        if not files:
+            return Response({"error": "No files provided"}, status=400)
+
+        uploaded = []
+        for f in files:
+            # validate via serializer
+            serializer = ValidatedPhotoSerializer(data={'image': f})
+            serializer.is_valid(raise_exception=True)
+            photo = Photo.objects.create(album=album, image=f)
+            uploaded.append(photo)
+
+        serializer = ValidatedPhotoSerializer(uploaded, many=True)
+        return Response(serializer.data, status=201)
+```
+🔸 URLs
+```py
+# lab/urls.py
+from django.urls import path
+from .views import SafeAlbumPhotoUploadView
+
+urlpatterns = [
+    path('albums/<int:album_id>/upload/', SafeAlbumPhotoUploadView.as_view(), name='upload-photos'),
+]
+```
+Example Request:
+```bash
+POST /albums/2/upload/
+Content-Type: multipart/form-data
+Authorization: Bearer <your_token>
+```
+form-data: 
+| Key    | Type | Value     |
+| ------ | ---- | --------- |
+| images | File | pic1.jpg  |
+| images | File | pic2.png  |
+| images | File | pic3.jpeg |
+
 

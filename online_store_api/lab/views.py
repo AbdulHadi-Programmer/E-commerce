@@ -252,21 +252,26 @@ class AlbumAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# This below view can handle multiple image upload in single api request 
 class AlbumPhotoUploadView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, album_id):
+    def post(self, request):
+        album_id = request.data.get('album_id')
+        if not album_id:
+            return Response({'error': 'album_id is required'}, status=400)
+
         album = get_object_or_404(Album, id=album_id, created_by=request.user)
         files = request.FILES.getlist('images')
 
         if not files:
             return Response({'error': "No files provided"}, status=400)
-        
+
         uploaded = []
         for f in files:
-            photo= Photo.objects.create(album=album, image=f)
+            photo = Photo.objects.create(album=album, image=f)
             uploaded.append(photo)
 
         serializer = PhotoSerializer(uploaded, many=True)
         return Response(serializer.data, status=201)
-    
+
